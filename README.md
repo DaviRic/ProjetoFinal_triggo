@@ -11,6 +11,7 @@ A solução utiliza Snowflake como data warehouse e dbt para a camada de transfo
 - Link oficial dos dados: [ftp.datasus.gov.br](ftp://ftp.datasus.gov.br/dissemin/publicos/SIHSUS/200801_/Dados/)
 
 ## 📁 Estrutura do Repositório
+```
 ProjetoFinal_triggo/
 │
 ├── data/
@@ -33,7 +34,7 @@ ProjetoFinal_triggo/
 │
 ├── .gitignore
 └── README.md
-
+```
 
 ## 🚀 Passo a Passo Realizado
 
