@@ -1,0 +1,6 @@
+boas_praticas.txt
+organizacao.txt
+.venv/
+data/raw/*
+data/converted/*
+!data/converted/exemplo.csv
