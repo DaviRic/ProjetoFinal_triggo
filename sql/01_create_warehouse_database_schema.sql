@@ -18,6 +18,10 @@ CREATE DATABASE IF NOT EXISTS triggo_db
 CREATE SCHEMA IF NOT EXISTS triggo_db.raw
     COMMENT = 'Schema com dados brutos do DataSUS';
 
+CREATE OR REPLACE STAGE triggo_stage
+  FILE_FORMAT = (TYPE = CSV FIELD_OPTIONALLY_ENCLOSED_BY='"' SKIP_HEADER=1 NULL_IF=('','NULL'))
+  COMMENT = 'Stage interno com dados brutos convertidos de .dbc para CSV';
+
 USE WAREHOUSE triggo_wh;
 USE DATABASE triggo_db;
 USE SCHEMA raw;
