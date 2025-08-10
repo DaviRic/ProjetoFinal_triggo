@@ -1,0 +1,12 @@
+triggo_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "<sua_conta>.snowflakecomputing.com"
+      user: "<seu_usuario>"
+      password: "<sua_senha>"
+      role: "<sua_role>"
+      warehouse: "<seu_warehouse>"
+      database: "<seu_database>"
+      schema: "<seu_schema>"
