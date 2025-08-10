@@ -22,6 +22,7 @@ USE WAREHOUSE triggo_wh;
 USE DATABASE triggo_db;
 USE SCHEMA raw;
 
+-- Cria uma stage dentro de raw
 CREATE OR REPLACE STAGE triggo_stage
   FILE_FORMAT = (TYPE = CSV FIELD_OPTIONALLY_ENCLOSED_BY='"' SKIP_HEADER=1 NULL_IF=('','NULL'))
   COMMENT = 'Stage interno com dados brutos convertidos de .dbc para CSV';
