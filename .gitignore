@@ -4,3 +4,5 @@ organizacao.txt
 data/raw/*
 data/converted/*
 !data/converted/exemplo.csv
+triggo_project/package-lock.yml
+profiles.yml/
