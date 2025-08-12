@@ -20,6 +20,7 @@ cid_union as (
 )
 
 select
+    {{ dbt_utils.generate_surrogate_key(['cid', 'tipo']) }} as id_doenca,
     cid,
     tipo
 from cid_union
