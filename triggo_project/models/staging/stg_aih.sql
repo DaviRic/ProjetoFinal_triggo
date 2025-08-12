@@ -26,6 +26,10 @@ select
 
     -- Diagnósticos
     diag_princ as cid_principal,
-    diag_secun as cid_secundario
+    diag_secun as cid_secundario,
+
+    -- Procedimentos
+    proc_solic,
+    proc_rea
 
 from raw_data

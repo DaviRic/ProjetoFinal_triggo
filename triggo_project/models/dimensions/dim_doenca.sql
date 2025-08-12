@@ -1,7 +1,7 @@
 with base as (
     select distinct
-        diag_princ as cid_principal,
-        diag_secun as cid_secundario
+        cid_principal,
+        cid_secundario
     from {{ ref('stg_aih') }}
 ),
 

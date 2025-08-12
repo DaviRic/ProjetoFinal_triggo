@@ -20,4 +20,4 @@ dim_tempo as (
 )
 
 select * from dim_tempo
-order by data;
+order by data

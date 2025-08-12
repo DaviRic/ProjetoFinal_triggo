@@ -5,18 +5,18 @@ with base as (
     from {{ ref('stg_aih') }}
 ),
 
-proc_solic as (
+PROC_SOLIC as (
     select distinct procedimento_solicitado as procedimento, 'Solicitado' as tipo from base where procedimento_solicitado is not null
 ),
 
-proc_rea as (
+PROC_REA as (
     select distinct procedimento_realizado as procedimento, 'Realizado' as tipo from base where procedimento_realizado is not null
 ),
 
 proc_union as (
     select * from proc_solic
     union
-    select * from proc_rea
+    select * from PROC_REA
 )
 
 select
