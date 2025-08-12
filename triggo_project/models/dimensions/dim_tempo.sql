@@ -9,6 +9,10 @@ dim_tempo as (
         extract(year from data) as ano,
         extract(month from data) as mes,
         extract(day from data) as dia,
-        
-
+        extract(quarter from data) as trimestre,
+        to_char(data, 'YYYY-MM-DD') as data_formatada,
+        dayofweek(data) as dia_da_semana,
 )
+
+select * from dim_tempo;
+order by data;
