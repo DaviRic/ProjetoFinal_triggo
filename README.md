@@ -36,20 +36,39 @@ ProjetoFinal_triggo/
 └── README.md
 ```
 
-## 🚀 Passo a Passo Realizado
+## Passo a Passo Realizado
 
-### 1. Preparação e Ingestão dos Dados
+### 1. Ingestão e Preparação dos Dados
+- Criado warehouse, database e schema dedicados no Snowflake para o projeto, garantindo isolamento e organização dos dados.
+- Convertidos arquivos originais no formato `.dbc` para `.csv` via script Python (`scripts/extract/convert_dbc_to_csv.py`), visando compatibilidade com o Snowflake e o dbt.
+- Armazenamento temporário realizado em um stage interno no Snowflake, simulando um data lake inicial.
+- Criada tabela `raw_aih` com schema tipado (DATE, NUMBER, STRING) para preservar integridade e coerência dos dados brutos.
+- Ingestão realizada com o comando `COPY INTO`, garantindo carregamento em lote e controle de erros.
 
-- Criado warehouse, database e schema no Snowflake para o projeto.  
-- Convertidos os arquivos `.dbc` originais para `.csv` utilizando script Python (`scripts/extract/convert_dbc_to_csv.py`).  
-- Criado stage interno no Snowflake e carregados os arquivos CSV convertidos para o stage.  
-- Criada tabela `raw_aih` com schema tipado no Snowflake para receber os dados brutos.  
-- Utilizado comando `COPY INTO` para ingerir os dados do stage para a tabela `raw_aih`.
+Decisão técnica chave:
+Manter as datas em formato texto (`YYYYMMDD`) na ingestão para evitar problemas de parsing inicial. Conversão para tipo DATE será feita nas camadas de transformação no dbt, assegurando rastreabilidade.
 
-## 📒 Decisões Técnicas
+## 2. Transformação e Modelagem com dbt
+- Estrutura de camadas adotada no dbt:
+  - Staging (`stg_`): limpeza, padronização de nomes de colunas, conversão de formatos (ex.: datas), e mapeamento direto da `raw_aih`.
+  - Intermediate (`int_`): junção e enriquecimento de dados, preparando chaves para dimensões.
+  - Mart (`dim_` e `fct_`): modelagem dimensional (Star Schema) com:
+    - `dim_tempo`
+    - `dim_localidade`
+    - `dim_doenca`
+    - `dim_procedimento`
+    - `fct_internacoes` (tabela fato principal)
 
-- Optou-se por converter arquivos `.dbc` para CSV, pela simplicidade e garantia de compatibilidade com Snowflake e dbt.  
-- Os dados foram carregados com tipos apropriados e específicos para cada coluna, como DATE para datas, NUMBER com precisão
-  para valores numéricos e STRING para códigos e textos, garantindo integridade e facilitando as transformações posteriores.
-- Datas foram mantidas em formato texto `YYYYMMDD` e serão convertidas no dbt conforme necessidade.  
+- Materializações usadas:
+  - Views para staging, visando leveza e flexibilidade.
+  - Tables para dimensões e fato, visando performance em consultas analíticas.
+- Implementados testes de qualidade de dados no dbt:
+  - "not_null" e "unique" em IDs e chaves primárias.
+
+3. Explicação da escolha do Design
+- Snowflake foi escolhido como data warehouse pela performance, escalabilidade e facilidade de integração com dbt.
+- Conversão para CSV simplifica ingestão e padroniza entrada, evitando dependência de formatos proprietários.
+- Camadas no dbt permitem modularidade, facilitam manutenção e isolam lógicas de transformação.
+- Testes dbt asseguram confiabilidade e documentam regras de negócio diretamente no código.
+- Modelagem dimensional otimiza consumo em ferramentas de BI e permite análises rápidas sobre internações hospitalares.
 
