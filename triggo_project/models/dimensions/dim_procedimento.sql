@@ -7,7 +7,7 @@ with base as (
 )
 
 select
-    row_number() over (order by procedimento_solicitado) as id_procedimento
+    row_number() over (order by procedimento_solicitado) as id_procedimento,
     procedimento_solicitado
     procedimento_realizado,
 from base
