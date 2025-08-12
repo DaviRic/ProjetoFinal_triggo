@@ -5,3 +5,9 @@ with base as (
     from {{ ref('stg_aih')}}
     where proc_solic is not null
 )
+
+select
+    row_number() over (order by procedimento_solicitado) as id_procedimento
+    procedimento_solicitado
+    procedimento_realizado,
+from base
