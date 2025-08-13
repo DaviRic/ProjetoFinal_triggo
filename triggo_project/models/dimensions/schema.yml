@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: dim_doenca
+    description: Tabela de dimensão para doenças (CIDs).
+    columns:
+      - name: id_doenca
+        description: Chave primária substituta da dimensão.
+        tests:
+          - not_null
+      - name: cid
+        description: Código da doença (CID-10).
+        tests:
+          - not_null
+      - name: tipo
+        description: Tipo de diagnóstico, 'Principal' ou 'Secundário'.
+        tests:
+          - accepted_values:
+              values: ['Principal', 'Secundário']
+
+  - name: dim_hospital
+    description: Tabela de dimensão para hospitais.
+    columns:
+      - name: id_hospital
+        description: Chave primária para o hospital, baseada no CNES.
+        tests:
+          - not_null
+      - name: cnes_id
+        description: Código Nacional de Estabelecimentos de Saúde (CNES).
+        tests:
+          - not_null
+
+  - name: dim_localidade
+    description: Tabela de dimensão para localidades (municípios).
+    columns:
+      - name: id_localidade
+        description: Chave primária substituta para o município.
+        tests:
+          - not_null
+      - name: municipio_id
+        description: Código de identificação do município.
+        tests:
+          - not_null
+
+  - name: dim_paciente
+    description: Tabela de dimensão para informações demográficas do paciente.
+    columns:
+      - name: id_paciente
+        description: Chave primária substituta do paciente.
+        tests:
+          - unique
+          - not_null
+      - name: sexo
+        description: Gênero do paciente.
+        tests:
+          - not_null
+
+  - name: dim_procedimento
+    description: Tabela de dimensão para procedimentos realizados e solicitados.
+    columns:
+      - name: id_procedimento
+        description: Chave primária substituta para o procedimento.
+        tests:
+          - unique
+          - not_null
+      - name: procedimento_codigo
+        description: Código do procedimento.
+        tests:
+          - not_null
+
+  - name: dim_tempo
+    description: Tabela de dimensão para dados de tempo.
+    columns:
+      - name: id_data
+        description: Chave primária da dimensão de tempo no formato YYYYMMDD.
+        tests:
+          - unique
+          - not_null
