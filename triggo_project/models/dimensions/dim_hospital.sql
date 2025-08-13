@@ -1,13 +1,13 @@
 with base as (
     select
-        distinct cnpj_hospital,
-        uf,
-        cnes
+        distinct cnes_id,
+        cnpj_hospital,
+        uf
     from {{ ref('stg_aih') }}
 )
-
 select
+    cnes_id as id_hospital,
+    cnes_id,
     cnpj_hospital,
-    uf,
-    cnes
+    uf
 from base
