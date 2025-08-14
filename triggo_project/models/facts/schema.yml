@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: fato_internacao
+    description: Tabela de fatos para internações hospitalares.
+    columns:
+      - name: numero_aih
+        description: Número da AIH, atua como chave primária na tabela de fatos.
+        tests:
+          - not_null
+      
+      - name: fk_doenca_principal
+        description: Chave estrangeira para a dimensão de doença principal.
+        tests:
+          - relationships:
+              to: ref('dim_doenca')
+              field: id_doenca
+      - name: fk_doenca_secundaria
+        description: Chave estrangeira para a dimensão de doença secundária.
+        tests:
+          - relationships:
+              to: ref('dim_doenca')
+              field: id_doenca
+      - name: fk_hospital
+        description: Chave estrangeira para a dimensão de hospital.
+        tests:
+          - relationships:
+              to: ref('dim_hospital')
+              field: id_hospital
+      - name: fk_localidade_residencia
+        description: Chave estrangeira para a dimensão de localidade de residência.
+        tests:
+          - relationships:
+              to: ref('dim_localidade')
+              field: id_localidade
+      - name: fk_localidade_movimentacao
+        description: Chave estrangeira para a dimensão de localidade do hospital.
+        tests:
+          - relationships:
+              to: ref('dim_localidade')
+              field: id_localidade
+      - name: fk_procedimento_solicitado
+        description: Chave estrangeira para a dimensão de procedimento solicitado.
+        tests:
+          - relationships:
+              to: ref('dim_procedimento')
+              field: id_procedimento
+      - name: fk_procedimento_realizado
+        description: Chave estrangeira para a dimensão de procedimento realizado.
+        tests:
+          - relationships:
+              to: ref('dim_procedimento')
+              field: id_procedimento
+      - name: fk_tempo_internacao_data
+        description: Chave estrangeira para a data de internação.
+        tests:
+          - relationships:
+              to: ref('dim_tempo')
+              field: id_data
+      - name: fk_tempo_saida_data
+        description: Chave estrangeira para a data de saída.
+        tests:
+          - relationships:
+              to: ref('dim_tempo')
+              field: id_data
