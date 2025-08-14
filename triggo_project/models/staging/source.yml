@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw
+    description: A camada de ingestão que contém os dados brutos do DataSUS.
+    database: TRIGGO_DB
+    schema: RAW
+    tables:
+      - name: stg_aih
+        description: Dados de Autorização de Internação Hospitalar (AIH) brutos, antes de qualquer limpeza ou transformação.
