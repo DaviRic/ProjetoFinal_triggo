@@ -3,19 +3,20 @@ with raw_data as (
 )
 
 select
-    -- Hospital
+    -- Hospital e Localização
     uf_zi as uf,
     cgc_hosp as cnpj_hospital,
-    cnes,
+    cnes as cnes_id,
+    munic_res as municipio_residencia_id,
+    munic_mov as municipio_movimentacao_id,
 
     -- Paciente
-    munic_res as municipio_residencia,
     cast(nasc as date) as data_nascimento,
     sexo,
     idade,
     raca_cor,
 
-    -- Fato internação
+    -- Informações da Internação
     cast(n_aih as string) as numero_aih,
     ano_cmpt as ano_competencia,
     mes_cmpt as mes_competencia,
@@ -27,9 +28,13 @@ select
     -- Diagnósticos
     diag_princ as cid_principal,
     diag_secun as cid_secundario,
+    cid_morte as cid_morte,
 
     -- Procedimentos
-    proc_solic,
-    proc_rea
+    proc_solic as procedimento_solicitado,
+    proc_rea as procedimento_realizado,
+
+    -- Outras colunas úteis
+    morte
 
 from raw_data
