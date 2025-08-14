@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: mrt_internacoes_mensal
+    description: Tabela agregada por mês, estado e doença, pronta para análises de negócio.
+    columns:
+      - name: ano
+        description: Ano da internação.
+        tests:
+          - not_null
+      
+      - name: mes_num
+        description: Número do mês da internação (1 a 12).
+        tests:
+          - not_null
+
+      - name: estado
+        description: Sigla do estado (UF).
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['AM', 'Outro']
+      
+      - name: cid_principal
+        description: Código CID-10 da doença principal.
+        tests:
+          - not_null
+
+      - name: numero_internacoes
+        description: Contagem total de internações no período.
+        tests:
+          - not_null
+      
+      - name: total_dias_permanencia
+        description: Soma dos dias de permanência das internações.
+        tests:
+          - not_null
+      
+      - name: valor_total_internacoes
+        description: Valor total gasto com as internações.
+        tests:
+          - not_null
+      
+      - name: numero_obitos
+        description: Contagem de óbitos no período.
+        tests:
+          - not_null
