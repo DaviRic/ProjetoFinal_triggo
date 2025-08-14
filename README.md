@@ -262,9 +262,53 @@ ORDER BY ano, mes_nome;
 ```
 
 ---
+
+## Plano de Orquestração com Snowflake Tasks
+
+A orquestração é a autromatização e o agendamento de todas as etapasda pipeline de dados. Em vez de rodar manualmente o dbt run e dbt test, a orquestração garante que isso ocorra de forma automática, na ordem correta e com tratamento de erros.
+
+### Decisão do porque usar Snowflake Tasks
+- Nativo do Snowflake: não exige a configuração de servidores externos (como o Airflow), o que simplifica a arquitetura e reduz custos e complexidade.
+
+- Gerenciamento de dependências: o Snowflake Tasks permite encadear tarefas, garantindo que uma etapa só comece após a conclusão da anterior.
+
+- Eficiência de custo: você paga apenas pelo tempo de computação usado pelas tarefas, sem custo fixo de servidores.
+
+### Plano de Execução
+
+1. Tarefa Agendada:
+Uma tarefa principal seria agendada para rodar periodicamente (pode ser diariamente, toda madrugada, etc)
+
+2. Execução do dbt:
+A tarefa principal chamaria o dbt para executar a pipeline completa. O dbt se encarrega de resolver as dependências entre os modelos (stg -> dim e fato -> mart). Essa seria a execução:
+   - dbt run: executaria todos os modelos, na ordem correta, graças ao gráfico de dependências do dbt. Isso garante que a dim_localidade seja criada antes da fato_internacao, por exemplo.
+
+3. Testes de qualidade:
+Após o dbt run ser concluído com sucesso, uma tarefa dependente seria executada para garantir a qualidade
+dos dados:
+   - dbt test: rodaria todos os testes que foram definidos nos arquivos schema.yml. Se algum teste falhar, a pipeline é interrompida e um aleta é disparado.
+
+   - Incluir um mecanismo de notificação para alertar a equipe sobre o status da pipeline. Uma tarefa final enviaria uma notificação (via email ou slack) informando se a execução e os testes foram bem sucedidos ou houve alguma falha.
+
+---
+
 ## Invação e Diferenciação: Alerta Epidemiológico Básico
 Para demonstrar algo de diferente, resolvi propor uma solução para detecção de picos incomuns de internações.
 - Problema: a detecção manual de surtos epidemiológicos pode ser lenta e reativa.
 - Solução Proposta: um mecanismo de alerta proativo, que utiliza os dados já modelados na pipeline para identificar anomalias.
 - Como funciona: após a execução do `dbt run`, um `dbt test` customizado seria acionado para comparar o número de internações de uma doença específica na última semana com a média das semanas anteriores. Caso o aumento ultrapasse um limite pré-definido (20% por exemplo), um alerta seria enviado automaticamente.
 - Valor para o Negócio: esse sistema de alerta permite que as autoridades de saúde sejam notificadas sobre possíveis surtos em estágio inicial, possibilitando uma resposa mais rápida e eficiente. Isso transforma a pipeline de dados de uma ferramente de análise passiva em um sistema de vigilância de saúde proativo.
+
+
+## Documentação para o dbt
+- A documentação do dbt é gerada de forma automática e centralizada a partir dos arquivos `.yml` do projeto. O dbt cria o mapa do projeto mostrando o lineage, a estrutura de pastas e a configuração de cada modelo.
+- Para gerar e vizualisar, rode:
+```bash
+dbt docs generate
+```
+
+```bash
+dbt docs serve
+```
+
+Dessa fora, você terá acesso à exploração interativa dos modelos. Caso não abra automaticamente, entre em `http://localhost:8080`.
